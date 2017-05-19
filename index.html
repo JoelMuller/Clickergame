@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="shop" style="float: right; margin-right: 1%;">
+    <h1 style="text-align: center; border: solid silver 5px; margin-bottom: 0;">Shop</h1>
+    <div id="sword" style="border: solid silver 5px;">
+        <img src="img/sword.jpg" style="height: 110px; width: 110px;">
+        <button onclick="sword()">
+            DMG UP
+        </button>
+        Cost = 150
+    </div>
+
+    <div id="bomb" style="border: solid silver 5px;">
+        <img src="img/bomb.jpg" style="height: 110px; width: 110px;">
+        <button onclick="bomb()">
+            50% DMG
+        </button>
+        Cost = 50
+    </div>
+</div>
+
+<div id="enemycontainer"
+     style="width: 35%; height: 60%; display: flex; justify-content: center; background-color: gray; align-items: center; border: 5px solid; border-color: red;">
+    <img src="img/boi.png" id="enemy" style="width: 90%; height: 90%;">
+</div>
+
+<div id="healthbar"
+     style="background-color: red; width:50%; height: 6%; border: 5px solid; border-color: black; margin-top: 1%;">
+
+</div>
+
+<div id="hp" style="width:50%; display: flex; justify-content: center; font-size: xx-large;">
+    50
+</div>
+
+<div id="text">
+
+</div>
+
+<button onclick="damage()" style="width: 10%; height: 10%;">
+    HIT
+</button>
+<button onclick="enemyDead()">
+    instant kill
+</button>
+
+<div id="money" style="margin: 2% 0 2% 0; border: solid green; width: 5%;">
+    Money: 0.
+</div>
+
+
+
+<script>
+    enemies = ["img/rengar.png", "img/boi.png", "img/rare_chick.jpg", "img/hld.jpg", "img/yasuo.png", "img/squid.jpg", "img/skeleton.png"];
+    var enemiesKilled = 0;
+    var currency = 0;
+    var hitDamage = 1;
+    var bombDamage = 0;
+
+    function damage() {
+
+        var healthbarvalue = document.getElementById("healthbar").style.width;
+        healthbarvalue = healthbarvalue.substring(0, healthbarvalue.length - 1) - hitDamage - bombDamage;
+
+        if (healthbarvalue < 0) {
+            enemyDead();
+            healthbarvalue = 50;
+        }
+        document.getElementById("healthbar").style.width = healthbarvalue + "%";
+        document.getElementById("hp").textContent = Math.floor(healthbarvalue);
+        bombDamage = 0;
+    }
+    function enemyDead() {
+        enemiesKilled++;
+
+        var enemy = enemies[Math.floor(Math.random() * enemies.length)];
+        document.getElementById("text").textContent = "Je hebt " + enemiesKilled + (enemiesKilled > 1 ? " vijanden verslagen!" : " vijand verslagen!");
+        console.log("enemy is: " + enemy);
+        document.getElementById("enemy").src = enemy;
+        currency = currency + 2 * enemiesKilled;
+
+        money();
+    }
+
+    function money() {
+        document.getElementById("money").textContent = "Money: " + currency + ".";
+    }
+
+    function sword() {
+        if (currency >= 150) {
+            currency = currency - 150;
+            hitDamage = hitDamage + 0.25;
+            money();
+        } else {
+            alert("Je hebt niet genoeg moneyssssss");
+        }
+
+    }
+
+    function bomb() {
+        if (currency >= 50) {
+            currency = currency - 50;
+            bombDamage = 25;
+            money();
+        }else{
+            alert("Je hebt niet genoeg moneyssssss");
+        }
+    }
+
+
+</script>
+
+</body>
+</html>
